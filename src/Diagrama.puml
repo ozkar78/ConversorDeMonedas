@@ -1,0 +1,114 @@
+@startuml CurrencyConverter
+
+@startuml CurrencyConverter
+
+skinparam class {
+    BackgroundColor PaleGreen
+    BorderColor DarkSlateGray
+    ArrowColor Navy
+}
+
+title Currency Converter Class Diagram
+
+class Menu {
+  {field} Controla el flujo principal
+  {method} + main(args: String[]): void
+}
+note top of Menu
+  **Interfaz de usuario principal**:
+  - Muestra un menú interactivo con opciones de conversión
+  - Captura y valida la entrada del usuario
+  - Delega las operaciones a ConvertirMoneda
+  - Maneja errores de entrada básicos
+end note
+
+class ConsultarMoneda {
+  {field} - API_KEY: String = "17e6cb2420c224ddf11b4fd0"
+  {field} - BASE_URL: String
+  {method} + obtenerTasaDeCambio(monedaOrigen: String, monedaDestino: String): double
+}
+note right of ConsultarMoneda
+  **Conexión con API externa**:
+  - Construye URLs para solicitudes HTTP
+  - Procesa respuestas JSON usando GSON
+  - Retorna tasas de cambio actualizadas
+  - Maneja errores de conexión (códigos HTTP)
+end note
+
+class ConvertirMoneda {
+  {method} + convertir(monedaOrigen: String, monedaDestino: String, consulta: ConsultarMoneda, scanner: Scanner): void
+}
+note bottom of ConvertirMoneda
+  **Motor de conversión**:
+  1. Solicita el monto a convertir
+  2. Obtiene la tasa de cambio actual
+  3. Realiza el cálculo matemático
+  4. Muestra el resultado formateado
+  - Incluye manejo de errores numéricos
+end note
+
+class Monedas <<Record>> {
+  {field} - base_code: String (Código ISO moneda origen)
+  {field} - target_code: String (Código ISO moneda destino)
+  {field} - conversion_rate: double (Tasa de cambio)
+  {field} - conversion_result: double (Resultado calculado)
+}
+note left of Monedas
+  **Estructura de datos inmutable**:
+  - Almacena los detalles de una conversión
+  - Usa el formato record (Java 14+)
+  - Simplifica el manejo de datos entre componentes
+end note
+
+' === Clases externas ===
+class Scanner {
+  {field} Lee entrada del usuario
+}
+note right of Scanner
+  **Entrada de usuario**:
+  - Utilizado para leer opciones y montos
+  - Gestionado por Menu y ConvertirMoneda
+end note
+
+class HttpURLConnection {
+  {field} Conexión HTTP
+}
+note right of HttpURLConnection
+  **Comunicación API**:
+  - Establecida por ConsultarMoneda
+  - Maneja solicitudes GET
+end note
+
+class JsonObject {
+  {field} Representación JSON
+}
+note left of JsonObject
+  **Procesamiento JSON**:
+  - Parte de la librería GSON
+  - Parseo de respuestas de la API
+end note
+
+class JsonParser {
+  {field} Conversión de texto a JSON
+}
+note left of JsonParser
+  **Utilidad GSON**:
+  - Convierte strings JSON en objetos
+  - Usado en ConsultarMoneda
+end note
+
+' === Relaciones ===
+Menu --> ConsultarMoneda
+Menu --> ConvertirMoneda
+Menu --> Scanner
+
+ConvertirMoneda --> ConsultarMoneda
+ConvertirMoneda --> Scanner
+
+ConsultarMoneda --> HttpURLConnection
+ConsultarMoneda --> JsonObject
+ConsultarMoneda --> JsonParser
+
+@enduml
+
+@enduml
