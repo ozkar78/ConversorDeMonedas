@@ -1,6 +1,6 @@
 # 💱 Conversor de Monedas
 
-Proyecto desarrollado en **Java 17** como parte del programa **ONE-Backend**, que integra datos en tiempo real mediante la API **ExchangeRate-API** para convertir múltiples divisas con precisión y eficiencia.
+Proyecto desarrollado en **Java 21** como parte del programa **ONE-Backend**, que integra datos en tiempo real mediante la API **ExchangeRate-API** para convertir múltiples divisas con precisión y eficiencia.
 
 ---
 
@@ -12,7 +12,7 @@ Este conversor es más que un ejercicio técnico: es una demostración práctica
 
 ## 🔧 Tecnologías y herramientas
 
-- Java 17
+- Java 21
 - ExchangeRate-API (API REST en tiempo real)
 - Menú CLI interactivo
 - IntelliJ IDEA
